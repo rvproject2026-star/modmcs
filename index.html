@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOWNLOAD MOD MCS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85)), 
+                        url('./background.jpg') center/cover no-repeat;
+            filter: brightness(2.0);
+        }
+
+        .card-container {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 440px;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* TAMPILAN 1: INPUT KODE */
+        .instruction-text {
+            color: #4ee3db;
+            font-size: 1.15rem;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            font-weight: 500;
+            text-shadow: 0 0 8px rgba(78, 227, 219, 0.4);
+        }
+
+        .input-group {
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .input-label {
+            color: #4ee3db;
+            font-size: 0.85rem;
+            font-family: monospace;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            background-color: rgba(78, 227, 219, 0.15);
+            padding: 2px 8px;
+            border-left: 3px solid #4ee3db;
+        }
+
+        .cyber-box {
+            position: relative;
+            width: 100%;
+            padding: 12px;
+            background: rgba(10, 20, 25, 0.6);
+            border: 1px solid rgba(78, 227, 219, 0.3);
+            box-shadow: inset 0 0 15px rgba(78, 227, 219, 0.1);
+        }
+
+        .cyber-box::before, .cyber-box::after,
+        .cyber-box-corners::before, .cyber-box-corners::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: #00ffff;
+            border-style: solid;
+            pointer-events: none;
+        }
+
+        .cyber-box::before { top: -2px; left: -2px; border-width: 3px 0 0 3px; }
+        .cyber-box::after { top: -2px; right: -2px; border-width: 3px 3px 0 0; }
+        .cyber-box-corners::before { bottom: -2px; left: -2px; border-width: 0 0 3px 3px; }
+        .cyber-box-corners::after { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; }
+
+        .cyber-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #4ee3db;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 4px 8px;
+        }
+
+        .cyber-input::placeholder { color: rgba(78, 227, 219, 0.5); }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #23948e;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            transition: 0.3s;
+            margin-bottom: 15px;
+        }
+
+        .submit-btn:hover {
+            background: #4ee3db;
+            color: #000;
+            box-shadow: 0 0 10px #4ee3db;
+        }
+
+        .status-message {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            min-height: 20px;
+        }
+
+        .alert-box {
+            position: relative;
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(5, 15, 20, 0.7);
+            border: 1px solid #23948e;
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+        }
+
+        .alert-content {
+            color: #4ee3db;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .warning-icon {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            margin-right: 5px;
+            display: inline-block;
+        }
+
+        /* TAMPILAN 2: DESKRIPSI & DOWNLOAD (Hidden Awal) */
+        #downloadSection {
+            display: none;
+            width: 100%;
+            background: rgba(10, 20, 25, 0.85);
+            border: 1px solid rgba(78, 227, 219, 0.4);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            padding: 25px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .app-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(78, 227, 219, 0.2);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .app-icon {
+            width: 65px;
+            height: 65px;
+            background: #23948e;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            border: 1px solid #00ffff;
+        }
+
+        .app-title h2 {
+            color: #4ee3db;
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+
+        .app-title p {
+            color: #aaaaaa;
+            font-size: 0.85rem;
+        }
+
+        .section-title {
+            color: #4ee3db;
+            font-size: 1rem;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            border-left: 3px solid #4ee3db;
+            padding-left: 8px;
+        }
+
+        .description {
+            color: #cccccc;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .features-list {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+
+        .features-list li {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .features-list li::before {
+            content: "✔";
+            color: #00ffcc;
+        }
+
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: #23948e;
+            color: #ffffff;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            margin-top: 20px;
+        }
+
+        .download-btn:hover {
+            background: #4ee3db;
+            color: #000;
+            box-shadow: 0 0 15px #4ee3db;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-container"></div>
+
+    <div class="card-container">
+        
+        <!-- BAGIAN 1: FORM INPUT KODE -->
+        <div id="verifySection" style="width: 100%;">
+            <p class="instruction-text">
+                untuk download mod apk ini tolong masukan Kode yang di berikan developers
+            </p>
+
+            <div class="input-group">
+                <span class="input-label">ACCESS_CODE</span>
+                <div class="cyber-box">
+                    <div class="cyber-box-corners"></div>
+                    <input type="text" class="cyber-input" id="accessCode" placeholder="Masukkan kode..." autocomplete="off">
+                </div>
+            </div>
+
+            <button class="submit-btn" id="btnSubmit">SUBMIT KODE</button>
+            <div id="statusMessage" class="status-message"></div>
+
+            <div class="alert-box">
+                <div class="alert-content">
+                    <span class="warning-icon">⚠️</span> Hargailah sesuatu walaupun sekecil apapun Jika kamu ingin di hargai
+                </div>
+            </div>
+        </div>
+
+        <!-- BAGIAN 2: DESKRIPSI & TOMBOL DOWNLOAD -->
+        <div id="downloadSection">
+            <div class="app-header">
+                <div class="app-icon">🎮</div>
+                <div class="app-title">
+                    <h2>MOD MCS APK</h2>
+                    <p>Versi Terbarukan • Premium Unlock</p>
+                </div>
+            </div>
+
+            <div class="section-title">DESKRIPSI APLIKASI</div>
+            <p class="description">
+                MOD MCS ini dikembangkan khusus dengan fitur kustomisasi lengkap. Nikmati performa maksimal dan akses penuh ke seluruh fitur yang sebelumnya terkunci secara gratis.
+            </p>
+
+            <div class="section-title">FITUR MOD & KELEBIHAN</div>
+            <ul class="features-list">
+                <li>Fitur Premium Unlocked</li>
+                <li>No Ads (Tanpa Iklan)</li>
+                <li>Performa Lebih Cepat & Ringan</li>
+                <li>Anti-Ban & Aman Digunakan</li>
+            </ul>
+
+            <a href="./mod-mcs.apk" class="download-btn" download>DOWNLOAD MOD MCS (APK)</a>
+        </div>
+
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6balDIqDXsGJVq35I0IMIUr7wDxLDW5E",
+            authDomain: "modmcs-ac990.firebaseapp.com",
+            projectId: "modmcs-ac990",
+            storageBucket: "modmcs-ac990.firebasestorage.app",
+            messagingSenderId: "903830868879",
+            appId: "1:903830868879:web:62d3a8f10f0485aac531fa",
+            measurementId: "G-5P09H7Z9XB"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const btnSubmit = document.getElementById('btnSubmit');
+        const accessCodeInput = document.getElementById('accessCode');
+        const statusMessage = document.getElementById('statusMessage');
+        const verifySection = document.getElementById('verifySection');
+        const downloadSection = document.getElementById('downloadSection');
+
+        btnSubmit.addEventListener('click', async () => {
+            const inputCode = accessCodeInput.value.trim();
+
+            if (!inputCode) {
+                showStatus("Silakan masukkan kode terlebih dahulu!", "#ff5555");
+                return;
+            }
+
+            btnSubmit.disabled = true;
+            showStatus("Memverifikasi kode...", "#ffcc00");
+
+            try {
+                const codeRef = doc(db, "access_codes", inputCode);
+                const codeSnap = await getDoc(codeRef);
+
+                if (!codeSnap.exists()) {
+                    showStatus("Kode salah atau tidak ditemukan!", "#ff5555");
+                    btnSubmit.disabled = false;
+                    return;
+                }
+
+                const data = codeSnap.data();
+
+                if (data.isUsed === true) {
+                    showStatus("Kode ini sudah pernah digunakan!", "#ff5555");
+                    btnSubmit.disabled = false;
+                    return;
+                }
+
+                // Ubah status kode di Firebase menjadi true (terpakai)
+                await updateDoc(codeRef, {
+                    isUsed: true,
+                    usedAt: new Date().toISOString()
+                });
+
+                showStatus("Kode Valid!", "#00ffcc");
+
+                // Tampilkan deskripsi & tombol download
+                setTimeout(() => {
+                    verifySection.style.display = 'none';
+                    downloadSection.style.display = 'block';
+                }, 800);
+
+            } catch (error) {
+                console.error("Error:", error);
+                showStatus("Terjadi kesalahan koneksi/sistem.", "#ff5555");
+                btnSubmit.disabled = false;
+            }
+        });
+
+        function showStatus(text, color) {
+            statusMessage.style.color = color;
+            statusMessage.innerText = text;
+        }
+    </script>
+</body>
+</html>
