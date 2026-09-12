@@ -47,6 +47,7 @@
             text-align: center;
         }
 
+        /* Efek Ketik Intelijen */
         .instruction-text {
             color: #4ee3db;
             font-size: 1.15rem;
@@ -54,6 +55,16 @@
             margin-bottom: 25px;
             font-weight: 500;
             text-shadow: 0 0 8px rgba(78, 227, 219, 0.4);
+            border-right: 2px solid #4ee3db;
+            white-space: pre-wrap;
+            overflow: hidden;
+            display: inline-block;
+            animation: blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #4ee3db; }
         }
 
         .input-group {
@@ -73,15 +84,49 @@
             background-color: rgba(78, 227, 219, 0.15);
             padding: 2px 8px;
             border-left: 3px solid #4ee3db;
+            opacity: 0;
+            animation: fadeInLabel 0.5s ease forwards 1.2s;
         }
 
+        @keyframes fadeInLabel {
+            to { opacity: 1; }
+        }
+
+        /* ANIMASI KOTAK INPUT: Melebar & Kilatan Cahaya */
         .cyber-box {
             position: relative;
             width: 100%;
             padding: 12px;
             background: rgba(10, 20, 25, 0.6);
             border: 1px solid rgba(78, 227, 219, 0.3);
-            box-shadow: inset 0 0 15px rgba(78, 227, 219, 0.1);
+            
+            /* Mulai dari tidak terlihat, menciut di tengah (scaleX 0), lalu melebar */
+            transform: scaleX(0);
+            opacity: 0;
+            animation: expandCyberBox 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.5s, 
+                       cyber-glow 2s infinite alternate 2.3s;
+        }
+
+        @keyframes expandCyberBox {
+            0% {
+                transform: scaleX(0);
+                opacity: 0;
+                box-shadow: 0 0 0px #00ffff;
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 25px #00ffff, inset 0 0 15px #00ffff; /* Kilatan cahaya terang saat melebar */
+            }
+            100% {
+                transform: scaleX(1);
+                opacity: 1;
+                box-shadow: inset 0 0 15px rgba(78, 227, 219, 0.1);
+            }
+        }
+
+        @keyframes cyber-glow {
+            0% { box-shadow: inset 0 0 5px rgba(78, 227, 219, 0.1), 0 0 5px rgba(78, 227, 219, 0.1); }
+            100% { box-shadow: inset 0 0 20px rgba(78, 227, 219, 0.4), 0 0 12px rgba(78, 227, 219, 0.3); }
         }
 
         .cyber-box::before, .cyber-box::after,
@@ -125,6 +170,8 @@
             letter-spacing: 1.5px;
             transition: 0.3s;
             margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeInLabel 0.5s ease forwards 2.2s;
         }
 
         .submit-btn:hover {
@@ -148,6 +195,8 @@
             border: 1px solid #23948e;
             border-radius: 2px;
             box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+            opacity: 0;
+            animation: fadeInLabel 0.5s ease forwards 2.5s;
         }
 
         .alert-content {
@@ -279,12 +328,12 @@
         
         <!-- BAGIAN 1: FORM INPUT KODE -->
         <div id="verifySection" style="width: 100%;">
-            <p class="instruction-text">
-                untuk download mod apk ini tolong masukan Kode yang di berikan developers
-            </p>
+            <!-- Teks Efek Ketik -->
+            <p class="instruction-text" id="typewriterText"></p>
 
             <div class="input-group">
                 <span class="input-label">ACCESS_CODE</span>
+                <!-- Kotak input dengan animasi melebar & kilatan cahaya -->
                 <div class="cyber-box">
                     <div class="cyber-box-corners"></div>
                     <input type="text" class="cyber-input" id="accessCode" placeholder="Masukkan kode..." autocomplete="off">
@@ -333,20 +382,36 @@
 
     </div>
 
-    <!-- Firebase SDK & Config yang Sudah Disamarkan (Base64) -->
+    <!-- Firebase SDK & Skrip Animasi Serta Dekode Config -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Konfigurasi Firebase yang sudah dienkripsi (Base64)
+        // Konfigurasi Firebase yang dienkripsi (Base64)
         const encodedConfig = "eyJhcGlLZXkiOiJBSXphU3lBNmJhbERJcVBYc0dKVcUzNUkwSU1JVXI3d0R4TERXVzUiLCJhdXRoRG9tYWluIjoibW9kbWNzLWFjOTkwLmZpcmViYXNlYXBwLmNvbSIsInByb2plY3RJZCI6Im1vZG1jcy1hYzk5MCIsInN0b3JhZ2VCdWNrZXQiOiJtb2RtY3MtYWM5OTAuZmlyZWJhc3Rvc3RvcmFnZS5hcHAiLCJtZXNzYWdpbmdTZW5kZXJJZCI6IjkwMzgzMDg2ODg3OSIsImFwcElkIjoiMTo5MDM4MzA4Njg4Nzk6d2ViOjYyZDNhOGYxMGYwNDg1YWFjNTMxZmEiLCJtZWFzdXJlbWVudElkIjoiRy01UDA5SDdaOVhCIn0=";
         
-        // Otomatis mendekode string kembali menjadi objek config asli saat halaman dimuat
         const decodedString = atob(encodedConfig);
         const firebaseConfig = JSON.parse(decodedString);
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        // Efek Mengetik Teks (Typewriter Effect)
+        const textToType = "Untuk download MOD APK ini, silakan masukkan Access Code yang diberikan oleh developer.";
+        const typewriterElement = document.getElementById('typewriterText');
+        let charIndex = 0;
+
+        function typeWriter() {
+            if (charIndex < textToType.length) {
+                typewriterElement.innerHTML += textToType.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 35);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            typeWriter();
+        });
 
         const btnSubmit = document.getElementById('btnSubmit');
         const accessCodeInput = document.getElementById('accessCode');
